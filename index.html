@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spawn IRL - Menu with Chip and Tool Upload</title>
+<style>
+  body {
+    margin: 0;
+    background-color: black;
+    font-family: Arial, sans-serif;
+    color: white;
+  }
+  /* Three dots top-left */
+  #menuDots {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    user-select: none;
+  }
+  .dot {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+  }
+  /* Menu content */
+  #menuContent {
+    position: fixed;
+    top: 40px;
+    left: 20px;
+    background: black;
+    border: 1px solid white;
+    padding: 12px;
+    display: none;
+    border-radius: 6px;
+    width: 280px;
+    box-sizing: border-box;
+    color: white;
+  }
+  #chipSlotLabel {
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 6px;
+    display: inline-block;
+    border: 1px solid white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: black;
+  }
+  #chipCode {
+    width: 100%;
+    height: 120px;
+    background: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 6px;
+    resize: none;
+    font-family: monospace;
+    padding: 8px;
+    display: none;
+    box-sizing: border-box;
+  }
+  #uploadToolBtn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px;
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  #uploadedToolName {
+    margin-top: 8px;
+    font-size: 14px;
+    font-style: italic;
+    color: #ccc;
+    word-break: break-all;
+  }
+</style>
+</head>
+<body>
+
+<!-- Three dots menu -->
+<div id="menuDots" title="Menu">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+<div id="menuContent">
+  <label id="chipSlotLabel" title="Click to open/close chip code editor">Chip Slot (click to edit code)</label>
+  <textarea id="chipCode" placeholder="// Write your JavaScript code here"></textarea>
+
+  <input type="file" id="toolUploader" accept=".js,.json,.txt" style="display:none" />
+  <button id="uploadToolBtn">Upload Tool</button>
+  <div id="uploadedToolName" style="display:none"></div>
+</div>
+
+<script>
+  // Toggle menu visibility
+  const menuDots = document.getElementById('menuDots');
+  const menuContent = document.getElementById('menuContent');
+  menuDots.addEventListener('click', () => {
+    menuContent.style.display = menuContent.style.display === 'block' ? 'none' : 'block';
+  });
+
+  // Toggle chip code editor
+  const chipSlotLabel = document.getElementById('chipSlotLabel');
+  const chipCode = document.getElementById('chipCode');
+  chipSlotLabel.addEventListener('click', () => {
+    chipCode.style.display = chipCode.style.display === 'block' ? 'none' : 'block';
+  });
+
+  // Upload tool button triggers hidden input
+  const uploadToolBtn = document.getElementById('uploadToolBtn');
+  const toolUploader = document.getElementById('toolUploader');
+  const uploadedToolName = document.getElementById('uploadedToolName');
+
+  uploadToolBtn.addEventListener('click', () => {
+    toolUploader.click();
+  });
+
+  // Show uploaded tool file name
+  toolUploader.addEventListener('change', () => {
+    const file = toolUploader.files[0];
+    if (!file) {
+      uploadedToolName.style.display = 'none';
+      uploadedToolName.textContent = '';
+      return;
+    }
+    uploadedToolName.textContent = `Uploaded tool: ${file.name}`;
+    uploadedToolName.style.display = 'block';
+
+    // Optional: read file content and put it inside chipCode textarea
+    const reader = new FileReader();
+    reader.onload = e => {
+      chipCode.value = e.target.result;
+    };
+    reader.readAsText(file);
+  });
+</script>
+
+</body>
+</html>
