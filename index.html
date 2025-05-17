@@ -148,3 +148,117 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spawn IRL - Save and Spawn</title>
+<style>
+  body {
+    margin: 0;
+    background-color: black;
+    font-family: Arial, sans-serif;
+    color: white;
+  }
+  #designArea {
+    background: white;
+    width: 90vw;
+    height: 400px;
+    margin: 70px auto 20px auto;
+    border-radius: 8px;
+    position: relative;
+  }
+  #buttonsContainer {
+    width: 90vw;
+    margin: 0 auto 30px auto;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  button {
+    background: white;
+    color: black;
+    border: none;
+    padding: 12px 28px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+  }
+  button:hover {
+    background: #ddd;
+  }
+  #cablesDisplay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    height: 60px;
+    background: black;
+    border: 2px solid white;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    padding: 8px;
+    display: none;
+    overflow-x: auto;
+  }
+  #cablesDisplay span {
+    display: inline-block;
+    margin-right: 15px;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- Design area -->
+<div id="designArea">
+  <div id="cablesDisplay"></div>
+</div>
+
+<!-- Buttons -->
+<div id="buttonsContainer">
+  <button id="saveBtn">Save</button>
+  <button id="spawnBtn">Spawn</button>
+</div>
+
+<script>
+  const saveBtn = document.getElementById('saveBtn');
+  const spawnBtn = document.getElementById('spawnBtn');
+  const cablesDisplay = document.getElementById('cablesDisplay');
+
+  // For demo: saved designs stored in localStorage under 'savedDesigns'
+  // For now, we will just save a dummy design object with timestamp
+  saveBtn.addEventListener('click', () => {
+    let savedDesigns = JSON.parse(localStorage.getItem('savedDesigns') || '[]');
+
+    // For now, save a dummy design with timestamp
+    const newDesign = {
+      id: Date.now(),
+      name: `Design ${savedDesigns.length + 1}`,
+      data: "Example design data or chip code here"
+    };
+    savedDesigns.push(newDesign);
+    localStorage.setItem('savedDesigns', JSON.stringify(savedDesigns));
+    alert(`Saved ${newDesign.name}`);
+  });
+
+  spawnBtn.addEventListener('click', () => {
+    // Show cables connected to PC (simulate)
+    cablesDisplay.style.display = 'block';
+    cablesDisplay.innerHTML = `
+      <span>USB Cable - Connected</span>
+      <span>Power Cable - Connected</span>
+      <span>Broken HDMI Cable - Connected</span>
+      <span>Ethernet Cable - Connected</span>
+      <span>Audio Cable - Connected</span>
+    `;
+  });
+</script>
+
+</body>
+</html>
