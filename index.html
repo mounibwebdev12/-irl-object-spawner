@@ -3,164 +3,63 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Spawn IRL - Menu with Chip and Tool Upload</title>
+<title>Spawn IRL - All in One</title>
 <style>
   body {
-    margin: 0;
-    background-color: black;
-    font-family: Arial, sans-serif;
-    color: white;
+    margin: 0; background: black; color: white; font-family: Arial, sans-serif;
+    overflow-x: hidden;
   }
-  /* Three dots top-left */
+  /* Three dots menu top-left */
   #menuDots {
     position: fixed;
-    top: 15px;
-    left: 20px;
+    top: 10px; left: 10px;
     cursor: pointer;
-    display: flex;
-    gap: 8px;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
     user-select: none;
+    z-index: 1100;
   }
-  .dot {
-    width: 12px;
-    height: 12px;
-    background: white;
-    border-radius: 50%;
-  }
-  /* Menu content */
   #menuContent {
     position: fixed;
-    top: 40px;
-    left: 20px;
+    top: 50px; left: 10px;
     background: black;
-    border: 1px solid white;
+    border: 2px solid white;
     padding: 12px;
+    border-radius: 8px;
+    width: 220px;
+    z-index: 1100;
     display: none;
-    border-radius: 6px;
-    width: 280px;
-    box-sizing: border-box;
-    color: white;
   }
-  #chipSlotLabel {
-    cursor: pointer;
-    user-select: none;
-    margin-bottom: 6px;
-    display: inline-block;
-    border: 1px solid white;
-    padding: 6px 12px;
-    border-radius: 6px;
-    background: black;
+  #menuContent label {
+    display: block;
+    margin-bottom: 4px;
   }
-  #chipCode {
+  #menuContent textarea {
     width: 100%;
-    height: 120px;
-    background: black;
-    color: white;
-    border: 1px solid white;
-    border-radius: 6px;
-    resize: none;
+    height: 60px;
     font-family: monospace;
-    padding: 8px;
-    display: none;
-    box-sizing: border-box;
+    font-size: 14px;
+    margin-bottom: 8px;
+    background: #222;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    resize: none;
   }
-  #uploadToolBtn {
-    margin-top: 12px;
+  #menuContent button {
     width: 100%;
-    padding: 10px;
     background: white;
     color: black;
     border: none;
-    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 8px;
     font-weight: bold;
+    border-radius: 6px;
     cursor: pointer;
   }
-  #uploadedToolName {
-    margin-top: 8px;
-    font-size: 14px;
-    font-style: italic;
-    color: #ccc;
-    word-break: break-all;
-  }
-</style>
-</head>
-<body>
 
-<!-- Three dots menu -->
-<div id="menuDots" title="Menu">
-  <div class="dot"></div>
-  <div class="dot"></div>
-  <div class="dot"></div>
-</div>
-
-<div id="menuContent">
-  <label id="chipSlotLabel" title="Click to open/close chip code editor">Chip Slot (click to edit code)</label>
-  <textarea id="chipCode" placeholder="// Write your JavaScript code here"></textarea>
-
-  <input type="file" id="toolUploader" accept=".js,.json,.txt" style="display:none" />
-  <button id="uploadToolBtn">Upload Tool</button>
-  <div id="uploadedToolName" style="display:none"></div>
-</div>
-
-<script>
-  // Toggle menu visibility
-  const menuDots = document.getElementById('menuDots');
-  const menuContent = document.getElementById('menuContent');
-  menuDots.addEventListener('click', () => {
-    menuContent.style.display = menuContent.style.display === 'block' ? 'none' : 'block';
-  });
-
-  // Toggle chip code editor
-  const chipSlotLabel = document.getElementById('chipSlotLabel');
-  const chipCode = document.getElementById('chipCode');
-  chipSlotLabel.addEventListener('click', () => {
-    chipCode.style.display = chipCode.style.display === 'block' ? 'none' : 'block';
-  });
-
-  // Upload tool button triggers hidden input
-  const uploadToolBtn = document.getElementById('uploadToolBtn');
-  const toolUploader = document.getElementById('toolUploader');
-  const uploadedToolName = document.getElementById('uploadedToolName');
-
-  uploadToolBtn.addEventListener('click', () => {
-    toolUploader.click();
-  });
-
-  // Show uploaded tool file name
-  toolUploader.addEventListener('change', () => {
-    const file = toolUploader.files[0];
-    if (!file) {
-      uploadedToolName.style.display = 'none';
-      uploadedToolName.textContent = '';
-      return;
-    }
-    uploadedToolName.textContent = `Uploaded tool: ${file.name}`;
-    uploadedToolName.style.display = 'block';
-
-    // Optional: read file content and put it inside chipCode textarea
-    const reader = new FileReader();
-    reader.onload = e => {
-      chipCode.value = e.target.result;
-    };
-    reader.readAsText(file);
-  });
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Spawn IRL - Save and Spawn</title>
-<style>
-  body {
-    margin: 0;
-    background-color: black;
-    font-family: Arial, sans-serif;
-    color: white;
-  }
+  /* Design area */
   #designArea {
     background: white;
     width: 90vw;
@@ -168,15 +67,20 @@
     margin: 70px auto 20px auto;
     border-radius: 8px;
     position: relative;
+    overflow: auto;
+    z-index: 1;
   }
+
+  /* Buttons container */
   #buttonsContainer {
     width: 90vw;
     margin: 0 auto 30px auto;
     display: flex;
     justify-content: center;
     gap: 20px;
+    z-index: 1;
   }
-  button {
+  button.mainBtn {
     background: white;
     color: black;
     border: none;
@@ -188,77 +92,278 @@
     user-select: none;
     transition: background 0.2s ease;
   }
-  button:hover {
+  button.mainBtn:hover {
     background: #ddd;
   }
-  #cablesDisplay {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    height: 60px;
+
+  /* Spawned design box */
+  .spawnedDesign {
+    background: black;
+    color: white;
+    border: 2px solid white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 6px;
+    width: 150px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    user-select: none;
+  }
+
+  /* Cable selection */
+  #cableSelector {
+    margin: 12px 0 24px 10px;
+    color: white;
+    font-weight: bold;
+    user-select: none;
+  }
+  #cableSelect {
+    margin-left: 8px;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+
+  /* Cable preview */
+  #cablePreview {
+    color: white;
+    margin-left: 12px;
+    font-style: italic;
+  }
+
+  /* Cable animation */
+  #cableAnimation {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     background: black;
     border: 2px solid white;
-    border-radius: 6px;
+    padding: 10px 20px;
+    border-radius: 8px;
     color: white;
-    font-size: 14px;
-    padding: 8px;
+    font-weight: bold;
     display: none;
-    overflow-x: auto;
+    user-select: none;
+    z-index: 2000;
   }
-  #cablesDisplay span {
-    display: inline-block;
-    margin-right: 15px;
-    white-space: nowrap;
+
+  /* Saved designs popup */
+  #savedDesignsPopup {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: black;
+    border: 2px solid white;
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 300px;
+    width: 260px;
+    overflow-y: auto;
+    z-index: 1500;
+    display: none;
+  }
+  #savedDesignsPopup h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .savedDesignItem {
+    background: #222;
+    border: 1px solid #555;
+    padding: 8px;
+    margin: 6px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .savedDesignItem:hover {
+    background: #444;
+  }
+  #closeSavedPopup {
+    background: white;
+    color: black;
+    border: none;
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
   }
 </style>
 </head>
 <body>
 
-<!-- Design area -->
-<div id="designArea">
-  <div id="cablesDisplay"></div>
+<!-- Three dots menu -->
+<div id="menuDots" title="Menu">. . .</div>
+<div id="menuContent">
+  <label for="chipCodeInput">Chip code (makes design work):</label>
+  <textarea id="chipCodeInput" placeholder="Write your code here..."></textarea>
+  <button id="uploadToolBtn">Upload Tool</button>
+  <div id="cableSelector">
+    <label for="cableSelect">Choose cable:</label>
+    <select id="cableSelect" title="Select cable type">
+      <option value="USB Cable">USB Cable</option>
+      <option value="Power Cable">Power Cable</option>
+      <option value="HDMI Cable">HDMI Cable</option>
+      <option value="Ethernet Cable">Ethernet Cable</option>
+    </select>
+    <span id="cablePreview">USB Cable</span>
+  </div>
 </div>
+
+<!-- Design area -->
+<div id="designArea"></div>
 
 <!-- Buttons -->
 <div id="buttonsContainer">
-  <button id="saveBtn">Save</button>
-  <button id="spawnBtn">Spawn</button>
+  <button id="saveBtn" class="mainBtn">Save</button>
+  <button id="spawnBtn" class="mainBtn">Spawn</button>
+</div>
+
+<!-- Cable animation -->
+<div id="cableAnimation">Connecting cable...</div>
+
+<!-- Saved designs popup -->
+<div id="savedDesignsPopup">
+  <h3>Saved Designs</h3>
+  <div id="savedDesignsList"></div>
+  <button id="closeSavedPopup">Close</button>
 </div>
 
 <script>
+  // Menu toggle
+  const menuDots = document.getElementById('menuDots');
+  const menuContent = document.getElementById('menuContent');
+  menuDots.onclick = () => {
+    menuContent.style.display = (menuContent.style.display === 'block') ? 'none' : 'block';
+  };
+
+  // Elements
+  const chipCodeInput = document.getElementById('chipCodeInput');
+  const uploadToolBtn = document.getElementById('uploadToolBtn');
+  const designArea = document.getElementById('designArea');
   const saveBtn = document.getElementById('saveBtn');
   const spawnBtn = document.getElementById('spawnBtn');
-  const cablesDisplay = document.getElementById('cablesDisplay');
+  const cableSelect = document.getElementById('cableSelect');
+  const cablePreview = document.getElementById('cablePreview');
+  const cableAnimation = document.getElementById('cableAnimation');
+  const savedDesignsPopup = document.getElementById('savedDesignsPopup');
+  const savedDesignsList = document.getElementById('savedDesignsList');
+  const closeSavedPopup = document.getElementById('closeSavedPopup');
 
-  // For demo: saved designs stored in localStorage under 'savedDesigns'
-  // For now, we will just save a dummy design object with timestamp
+  // Update cable preview when selection changes
+  cableSelect.addEventListener('change', () => {
+    cablePreview.textContent = cableSelect.value;
+  });
+
+  // Save designs in localStorage
   saveBtn.addEventListener('click', () => {
+    const chipCode = chipCodeInput.value.trim();
+    if (!chipCode) {
+      alert('Please enter chip code to save your design.');
+      return;
+    }
     let savedDesigns = JSON.parse(localStorage.getItem('savedDesigns') || '[]');
 
-    // For now, save a dummy design with timestamp
     const newDesign = {
       id: Date.now(),
       name: `Design ${savedDesigns.length + 1}`,
-      data: "Example design data or chip code here"
+      code: chipCode,
+      createdAt: new Date().toISOString()
     };
     savedDesigns.push(newDesign);
     localStorage.setItem('savedDesigns', JSON.stringify(savedDesigns));
     alert(`Saved ${newDesign.name}`);
+    chipCodeInput.value = '';
+    menuContent.style.display = 'none';
+
+    // Show saved designs popup
+    showSavedDesigns();
   });
 
+  // Show saved designs popup only if designs exist
+  function showSavedDesigns() {
+    let savedDesigns = JSON.parse(localStorage.getItem('savedDesigns') || '[]');
+    if (savedDesigns.length === 0) {
+      alert('No saved designs yet.');
+      return;
+    }
+    savedDesignsList.innerHTML = '';
+    savedDesigns.forEach(design => {
+      const div = document.createElement('div');
+      div.className = 'savedDesignItem';
+      div.textContent = `${design.name} - ${new Date(design.createdAt).toLocaleString()}`;
+      div.title = design.code;
+      div.onclick = () => {
+        spawnDesign(design);
+        savedDesignsPopup.style.display = 'none';
+      };
+      savedDesignsList.appendChild(div);
+    });
+    savedDesignsPopup.style.display = 'block';
+  }
+
+  closeSavedPopup.addEventListener('click', () => {
+    savedDesignsPopup.style.display = 'none';
+  });
+
+  // Spawn button
   spawnBtn.addEventListener('click', () => {
-    // Show cables connected to PC (simulate)
-    cablesDisplay.style.display = 'block';
-    cablesDisplay.innerHTML = `
-      <span>USB Cable - Connected</span>
-      <span>Power Cable - Connected</span>
-      <span>Broken HDMI Cable - Connected</span>
-      <span>Ethernet Cable - Connected</span>
-      <span>Audio Cable - Connected</span>
-    `;
+    let savedDesigns = JSON.parse(localStorage.getItem('savedDesigns') || '[]');
+    if (savedDesigns.length === 0) {
+      alert('No saved designs to spawn. Save a design first.');
+      return;
+    }
+    // Spawn the last saved design
+    const designToSpawn = savedDesigns[savedDesigns.length -1];
+    spawnDesign(designToSpawn);
   });
-</script>
 
+  // Spawn design function with cable animation
+  function spawnDesign(design) {
+    // Show cable animation
+    cableAnimation.textContent = `Connecting ${cableSelect.value}...`;
+    cableAnimation.style.display = 'block';
+
+    // After 2 seconds hide animation and spawn design
+    setTimeout(() => {
+      cableAnimation.style.display = 'none';
+      // Clear design area then show spawned design box
+      designArea.innerHTML = '';
+      const spawnedDiv = document.createElement('div');
+      spawnedDiv.className = 'spawnedDesign';
+      spawnedDiv.textContent = `SPAWNED: ${design.name}`;
+      designArea.appendChild(spawnedDiv);
+
+      // Run chip code safely
+      try {
+        // Use Function constructor for sandbox eval of chip code
+        // Provide designArea element to code
+        const userFunc = new Function('designArea', design.code);
+        userFunc(designArea);
+      } catch(e) {
+        alert('Error running chip code: ' + e.message);
+      }
+    }, 2000);
+  }
+
+  // Upload Tool button (placeholder)
+  uploadToolBtn.addEventListener('click', () => {
+    alert('Upload tool feature coming soon!');
+  });
+
+  // Clicking outside menu closes it
+  document.addEventListener('click', (e) => {
+    if (!menuContent.contains(e.target) && e.target !== menuDots) {
+      menuContent.style.display = 'none';
+    }
+  });
+
+</script>
 </body>
 </html>
